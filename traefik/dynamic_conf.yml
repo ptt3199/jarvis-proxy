@@ -1,0 +1,27 @@
+# Dynamic config - reload on change
+http:
+  middlewares:
+    # Security headers
+    securityHeaders:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+        accessControlMaxAge: 100
+        hostsProxyHeaders:
+          - X-Forwarded-Host # Forward original host
+        referrerPolicy: "same-origin" # Referrer policy
+        customRequestHeaders:
+          X-Forwarded-Proto: "https" # Tell app we are using HTTPS
+
+    # Rate limiting
+    rateLimit:
+      average: 100 # Allow 100 rq / sec on average
+      burst: 20 # Allow burst up to 120 rq / sec
+
+    # Compression - Save bandwidth
+    gzip:
+      compress: {} # Enable gzip compression

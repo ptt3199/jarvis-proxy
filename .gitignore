@@ -1,0 +1,7 @@
+.env# .gitignore
+.env
+.env.local
+.env.*.local
+traefik/acme.json
+logs/
+*.log

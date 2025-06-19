@@ -1,0 +1,57 @@
+# Static config - Only load when start Traefik
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+# Entrypoints - define ports Traefik will listen on
+entryPoints:
+  web:
+    address: ":80"
+    # Auto redirect HTTP to HTTPS
+    http:
+      redirections:
+        entryPoint:
+          to: websecure 
+          scheme: https
+
+# Providers - define how Traefik discovers services
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false # Only expose services with traefik.enable=true
+    network: jarvis-proxy
+  
+  file:
+    filename: /etc/traefik/dynamic_conf.yml # Middleware
+    watch: true
+
+# Certificates - define how Traefik handles SSL
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: "phuongtanthanh99@gmail.com"
+      storage: /etc/traefik/acme.json # Store certs
+      dnsChallenge: # Wildcard certs
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+
+# API and Dashboard
+api:
+  dashboard: true
+  insecure: false # Disable insecure mode (auth required)
+
+# Logging
+log:
+  level: INFO
+  filePath: /var/log/traefik/traefik.log
+
+accessLog:
+  filePath: /var/log/traefik/access.log
+
+# Metrics - Prometheus
+metrics:
+  prometheus:
+    addRoutersLabels: true
+    addServicesLabels: true
