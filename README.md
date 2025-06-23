@@ -199,6 +199,51 @@ labels:
 
 ### Debug Commands
 ```bash
+# Check routing configuration
+curl http://localhost:8080/api/http/routers
+
+# Test direct service access  
+curl -H "Host: gw.thanhpt.xyz" http://localhost:80/yourpath
+
+# Check container networking
+docker network inspect jarvis-proxy
+
+# View real-time logs
+docker logs traefik --follow
+```
+
+## 📚 Documentation
+
+### Comprehensive Guides
+- **📖 [Service Management Architecture](./docs/traefik-service-management.md)** - Complete guide về file organization, numbering scheme, và automation
+- **🚀 [Quick Start Guide](./docs/quick-start.md)** - Commands và patterns thường dùng
+- **🛠️ [Development Roadmap](./docs/development-roadmap.md)** - Technical roadmap và future plans
+
+### Service Management System
+
+Jarvis-proxy sử dụng advanced service management system với:
+
+- **Category-based file numbering** (00-middlewares, 10-backend-*, 90-frontend-*)
+- **Automated service generation** với `./cli/generate-service.sh`
+- **Domain-based routing** (`service.thanhpt.xyz`, `service-api.thanhpt.xyz`)
+- **Auto-reload configuration** khi files thay đổi
+
+**Quick Examples:**
+```bash
+# Add new backend API
+./cli/generate-service.sh -n chat -t api -p 3001
+
+# Add frontend-only route
+./cli/generate-service.sh -n blog -t frontend -u https://blog.vercel.app
+
+# Add full-stack service  
+./cli/generate-service.sh -n admin -t both -p 4000 -u https://admin.vercel.app
+```
+
+---
+
+## 🔧 Legacy Debug Commands
+```bash
 # Check network
 docker network ls | grep jarvis-proxy
 

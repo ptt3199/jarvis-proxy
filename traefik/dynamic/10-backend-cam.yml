@@ -1,0 +1,21 @@
+# Homecam Service Configuration
+http:
+  services:
+    # Backend API
+    homecam-api:
+      loadBalancer:
+        servers:
+          - url: "http://homecam-api:8020"
+
+  routers:
+    # Backend API Router
+    homecam-api:
+      rule: "Host(`homecam-api.thanhpt.xyz`)"
+      service: homecam-api
+      entryPoints:
+        - web
+      middlewares:
+        - corsHomecam
+        - securityHeaders
+        # - rateLimit
+        # - compress 

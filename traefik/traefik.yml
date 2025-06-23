@@ -17,7 +17,7 @@ providers:
     network: jarvis-proxy
   
   file:
-    directory: /etc/traefik/
+    directory: /etc/traefik/dynamic/
     watch: true
 
 # No SSL certificates needed - Cloudflare handles SSL

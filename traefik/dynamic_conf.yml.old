@@ -17,6 +17,21 @@ http:
         customRequestHeaders:
           X-Forwarded-Proto: "https" # Tell app we are using HTTPS
 
+    # CORS for frontend-only access
+    corsHeaders:
+      headers:
+        accessControlAllowOrigin: "https://frontend.thanhpt.xyz"
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+        accessControlAllowHeaders:
+          - "Content-Type"
+          - "Authorization"
+        accessControlAllowCredentials: true
+
     # Rate limiting
     rateLimit:
       rateLimit:
@@ -32,9 +47,6 @@ http:
         servers:
           - url: "http://homecam-api:8020"
 
-
-
-
   # Routers configuration
   routers:
     homecam-api:
@@ -43,6 +55,7 @@ http:
       entryPoints:
         - web
       middlewares:
+        - corsHeaders
         - securityHeaders
         - rateLimit
         - gzip
